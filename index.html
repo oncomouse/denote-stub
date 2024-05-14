@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+    <title>Denote Stub Generator</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <style>
+        .monospace {
+            font-size: 0.875em;
+            font-family: var(--pico-font-family-monospace);
+        }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Denote Stub Generator</h1>
+      <form>
+        <label>Title <input name="title" placeholder="Title" /></label>
+        <label for="tags">Tags</label>
+        <input name="tags" placeholder="Tags" aria-label="Tags" aria-describedby="tags-helper"/>
+        <small id="tags-helper">Use <code>,</code> to separate between tags</small>
+        <input name="filename" placeholder="Filename (generated)" disabled />
+        <textarea name="stub" class="monospace" rows="15" disabled >File Contents</textarea>
+        <button type="submit">Generate</button>
+      </form>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@3.6.0/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cash-dom@8.1.5/dist/cash.min.js"></script>
+    <script>
+function generateStub(ev) {
+  ev.preventDefault();
+  const tags = $("input[name=tags]")[0].value.split(/,\s*/);
+  const today = Date.now();
+  const date = dateFns.format(today, "yyyyMMdd") + "T" + dateFns.format(today, "HHmmss");
+  const stubTitle = $("input[name=title]")[0].value.toLowerCase().replace(/[^A-Za-z0-9]/g, "-");
+  const tagString = (tags.length === 0 ? "" : "__" + tags.join("_"));
+  const fileName = `${date}--${stubTitle}${tagString}.org`;
+
+  $("input[name=filename]")[0].disabled = false;
+  $("input[name=filename]")[0].value = fileName;
+
+  const fileStub = `#+title:      ${$("input[name=title]")[0].value}
+#+date:       [${dateFns.format(today, "yyyy-MM-dd E HH:mm")}]
+#+filetags:   :${tags.join(":")}:
+#+identifier: ${date}
+
+`;
+  $("textarea[name=stub]")[0].disabled = false;
+  $("textarea[name=stub]")[0].value = fileStub;
+  return false;
+}
+
+$(document).ready(function() {
+  $("form").on("submit", generateStub);
+})
+</script>
+  </body>
+</html>
