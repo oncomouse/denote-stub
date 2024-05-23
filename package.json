@@ -1,7 +1,0 @@
-{
-  "name": "@oncomouse/denote-stub",
-  "prettier": "prettier-config-standard",
-  "devDependencies": {
-    "prettier-config-standard": "^7.0.0"
-  }
-}

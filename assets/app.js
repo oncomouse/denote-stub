@@ -1,5 +1,5 @@
 /* global $,dateFns */
-function fallbackCopyTextToClipboard(text) {
+function fallbackCopyTextToClipboard (text) {
   const textArea = document.createElement('textarea')
   textArea.value = text
 
@@ -22,7 +22,7 @@ function fallbackCopyTextToClipboard(text) {
 
   document.body.removeChild(textArea)
 }
-function copyTextToClipboard(text) {
+function copyTextToClipboard (text) {
   if (!navigator.clipboard) {
     fallbackCopyTextToClipboard(text)
     return
@@ -36,7 +36,7 @@ function copyTextToClipboard(text) {
     }
   )
 }
-function generateStub(ev) {
+function generateStub (ev) {
   ev.preventDefault()
   const tags = $('input[name=tags]')[0].value.split(/,\s*/)
   const today = Date.now()
